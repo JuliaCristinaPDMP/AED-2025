@@ -6,7 +6,7 @@ int main() {
 
     int valor, menor_valor, posicao;
 
-    scanf("%d", &menor_valor); // primeiro valor
+    scanf("%d", &menor_valor);
     posicao = 0;
 
     for (int i = 1; i < N; i++) {
