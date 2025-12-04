@@ -1,0 +1,93 @@
+#include <string.h>
+#include <stdio.h>
+#include <stdbool.h>
+#define VERTICES 501
+#define INF 999999
+typedef struct {
+    int qtdVertices;
+    int qtdArestasestas;
+    int rota[VERTICES][VERTICES];
+} Grafo;
+Grafo grafo;
+void dijkstra(int vOrigem, int vDestino)
+{
+    int a, ai;
+    int predecessores[VERTICES], fila[VERTICES];
+    int custos[VERTICES];
+    
+    memset(predecessores, -1, sizeof(predecessores));
+    memset(custos, INF, sizeof(custos));
+    
+    fila[vOrigem] = vOrigem;
+    custos[vOrigem] = 0;
+    
+    while (true)
+    {
+        int menorCusto = INF;
+        for (a = 0; a < grafo.qtdVertices; a++)
+        {
+            if (predecessores[a] == -1 && menorCusto > custos[a])
+            {
+                menorCusto = custos[ai = a];
+            }
+        }
+        if (menorCusto == INF) break;
+        predecessores[ai] = fila[ai];
+        
+        for (a = 0; a < grafo.qtdVertices; a++)
+        {
+            if (custos[a] > custos[ai] + grafo.rota[ai][a])
+            {
+                custos[a] = custos[ai] + grafo.rota[ai][a];
+                fila[a] = ai;
+            }
+        }
+    }
+    
+    if (custos[vDestino] < INF) 
+        printf("%d\n", custos[vDestino]);
+    else 
+        printf("Nao e possivel entregar a carta\n");
+}
+int main()
+{
+    memset(&grafo, 0, sizeof(grafo));
+    int n, e, k, origem, destino;
+    int x, y, z;
+    int i, j;
+    
+    while (true) {
+        scanf("%d %d", &n, &e);
+        if (n == 0 && e == 0) break;
+        for (i = 0; i <= n; i++)
+        {
+            for (j = 0; j <= n; j++)
+            {
+                grafo.rota[i][j] = INF;
+            }
+        }
+        for (i = 0; i < e; i++)
+        {
+            scanf("%d %d %d", &x, &y, &z);
+            if (grafo.rota[y][x] != INF)
+            {
+                grafo.rota[x][y] = 0;
+                grafo.rota[y][x] = 0;
+            }
+            else
+            {
+                grafo.rota[x][y] = z;
+            }
+        }
+        grafo.qtdVertices = n + 1;
+        grafo.qtdArestasestas = e;
+        scanf("%d", &k);
+        for (i = 0; i < k; i++)
+        {
+            scanf("%d %d", &origem, &destino);
+            dijkstra(origem, destino);
+        }
+        printf("\n");
+    }
+    return 0;
+}
